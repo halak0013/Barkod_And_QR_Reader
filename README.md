@@ -1,0 +1,1 @@
+# Barkod_And_QR_Reader
