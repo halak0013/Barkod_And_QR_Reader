@@ -1,5 +1,5 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QApplication, QLabel, QSpacerItem, QSplitter, QPushButton, QMainWindow, QHBoxLayout, QWidget, QVBoxLayout, QSizePolicy
+from PyQt6.QtWidgets import QApplication, QLabel,QLineEdit, QSpacerItem, QSplitter, QPushButton, QMainWindow, QHBoxLayout, QWidget, QVBoxLayout, QSizePolicy
 
 
 from src.ViedoWidgetc import VideoWidget, VideoThread
@@ -42,12 +42,16 @@ class MainWindow(QMainWindow):
         self.btn_v_box = QVBoxLayout()  # Vertical layout
 
         self.lb_s_name = QLabel("Name: ")
-        self.lb_s_cost = QLabel("Cost: ")
-        self.lb_s_code = QLabel("Code: ")
+        self.lb_s_price = QLabel("Price: ")
+        self.lb_s_id = QLabel("Id: ")
 
-        self.lb_name = QLabel("Null")
-        self.lb_cost = QLabel("Null")
-        self.lb_code = QLabel("Null")
+        self.lb_name = QLineEdit()
+        self.lb_price = QLineEdit()
+        self.lb_id = QLineEdit()
+        
+        self.lb_name.setEnabled(False)
+        self.lb_price.setEnabled(False)
+        self.lb_id.setEnabled(False)
 
         self.btn_add = QPushButton("Add")
         self.btn_delete = QPushButton("Delete")
@@ -58,13 +62,13 @@ class MainWindow(QMainWindow):
         self.btn_update.clicked.connect(self.bth_update_clicked)
 
         self.s_vbox.addWidget(self.lb_s_name)
-        self.s_vbox.addWidget(self.lb_s_cost)
-        self.s_vbox.addWidget(self.lb_s_code)
+        self.s_vbox.addWidget(self.lb_s_price)
+        self.s_vbox.addWidget(self.lb_s_id)
         self.s_vbox.stretch(1)
         
         self.a_vbox.addWidget(self.lb_name)
-        self.a_vbox.addWidget(self.lb_cost)
-        self.a_vbox.addWidget(self.lb_code)
+        self.a_vbox.addWidget(self.lb_price)
+        self.a_vbox.addWidget(self.lb_id)
 
         self.lb_h_box.addLayout(self.s_vbox)
         self.lb_h_box.addLayout(self.a_vbox)
@@ -94,6 +98,8 @@ class MainWindow(QMainWindow):
 
     def bth_update_clicked(self):
         print("güncelle")
+        
+    
 
 
 
