@@ -19,6 +19,7 @@ qr_image = qr.make_image(fill_color="black", back_color="white")
 
 # Save the image to a file
 image_path = f"image/{data}.png"
+
 qr_image.save(image_path)
 
 print("QR code generated and saved as", image_path)

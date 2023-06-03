@@ -111,6 +111,42 @@ class MainWindow(QMainWindow):
         
     def changeSlide(self):
         print(str(self.sldr_resol.value()))
+        self.opcv_o.thickness = self.sldr_resol.value()
+        
+        
+        """
+        zoom_level = self.opcv_o.resulation
+        frame_width = int(self.video_capture.get(cv2.CAP_PROP_FRAME_WIDTH))
+        frame_height = int(self.video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        zoom_factor = 1 / zoom_level 
+    
+        # Calculate ROI coordinates
+        roi_x = int(frame_width * (1 - zoom_factor) / 2)
+        roi_y = int(frame_height * (1 - zoom_factor) / 2)
+        roi_width = int(frame_width * zoom_factor)
+        roi_height = int(frame_height * zoom_factor)
+    
+        while True:
+            ret, frame = self.video_capture.read()
+            if not ret:
+                break
+        
+            # Crop the frame using ROI
+            roi = frame[roi_y:roi_y + roi_height, roi_x:roi_x + roi_width]
+            zoomed_frame = cv2.resize(roi, (frame_width, frame_height))
+        
+            # Process the zoomed frame here (e.g., barcode reading, display, etc.)
+            self.opcv_o.barcode_read(zoomed_frame, (255, 0, 0))
+        
+            cv2.imshow("Zoomed Frame", zoomed_frame)
+            if cv2.waitKey(1) == 27:  # 27 is the ASCII code for the 'Esc' key
+                break
+        #self.video_capture.set(cv2.CAP_PROP_ZOOM, zoom_level)
+        self.video_capture.release()
+        cv2.destroyAllWindows()
+        """
+        
+        
 
 
 
