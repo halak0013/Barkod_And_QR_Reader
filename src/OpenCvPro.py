@@ -22,7 +22,8 @@ class OpenCvPro():
             cv2.polylines(frame, [pts], True, color, self.thickness *2) 
             pts2 = barcode.rect                                  #
             cv2.putText(blurred_frame, myData, (pts2[0], pts2[1]), cv2.FONT_HERSHEY_SIMPLEX, self.thickness*0.2, color, 2)
-            cv2.imshow('Blurred Frame', blurred_frame)
+            #cv2.imshow('Blurred Frame', blurred_frame)
+            frame[:]=blurred_frame[:]
     
     def camera_capture(self):
         self.video_capture = cv2.VideoCapture(0)
