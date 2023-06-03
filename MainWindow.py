@@ -1,5 +1,5 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QApplication, QLabel,QLineEdit, QSpacerItem, QSplitter, QPushButton, QMainWindow, QHBoxLayout, QWidget, QVBoxLayout, QSizePolicy
+from PyQt6.QtWidgets import QApplication, QLabel,QLineEdit, QSlider, QSplitter, QPushButton, QMainWindow, QHBoxLayout, QWidget, QVBoxLayout, QSizePolicy
 
 
 from src.ViedoWidgetc import VideoWidget, VideoThread
@@ -56,6 +56,8 @@ class MainWindow(QMainWindow):
         self.btn_add = QPushButton("Add")
         self.btn_delete = QPushButton("Delete")
         self.btn_update = QPushButton("Update")
+        
+        self.sldr_resol=QSlider()
 
         self.btn_add.clicked.connect(self.btn_add_clicked)
         self.btn_delete.clicked.connect(self.btn_delete_clicked)
@@ -72,7 +74,15 @@ class MainWindow(QMainWindow):
 
         self.lb_h_box.addLayout(self.s_vbox)
         self.lb_h_box.addLayout(self.a_vbox)
+        
+        self.sldr_resol.setOrientation(Qt.Orientation.Horizontal)
+        self.sldr_resol.setTickPosition(QSlider.TickPosition.TicksAbove)
+        self.sldr_resol.setTickInterval(2)
+        self.sldr_resol.setMinimum(1)
+        self.sldr_resol.setMaximum(10)
+        self.sldr_resol.valueChanged.connect(self.changeSlide)
 
+        self.btn_v_box.addWidget(self.sldr_resol)
         self.btn_v_box.addWidget(self.btn_add)
         self.btn_v_box.addWidget(self.btn_delete)
         self.btn_v_box.addWidget(self.btn_update)
@@ -99,7 +109,8 @@ class MainWindow(QMainWindow):
     def bth_update_clicked(self):
         print("güncelle")
         
-    
+    def changeSlide(self):
+        print(str(self.sldr_resol.value()))
 
 
 
