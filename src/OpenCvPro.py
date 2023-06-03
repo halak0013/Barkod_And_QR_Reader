@@ -15,6 +15,26 @@ class OpenCvPro():
             cv2.polylines(frame, [pts], True, color, 5)
             pts2 = barcode.rect
             cv2.putText(frame, myData, (pts2[0], pts2[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
+            
+            
+            
+            # Get the bounding box of the QR code
+            x,y,w,h = pts2[0],pts2[1],pts2[2],pts2[3]
+
+            # Create a mask for the QR code region
+            mask = np.zeros(frame.shape[:2], dtype=np.uint8)
+            cv2.drawContours(mask, [pts], -1, 255, -1)
+
+            # Apply Gaussian blur to the region outside the QR code
+            blurred = cv2.GaussianBlur(frame, (51, 51), 0)
+            blurred[~mask.astype(bool)] = frame[~mask.astype(bool)]
+
+            # Draw the QR code bounding box and text on the blurred frame
+            cv2.polylines(blurred, [pts], True, color, 5)
+            cv2.putText(blurred, myData, (pts2[0], pts2[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
+
+            # Assign the blurred frame back to the original frame
+            frame[:] = blurred[:]
     
     def camera_capture(self):
         self.video_capture = cv2.VideoCapture(0)
