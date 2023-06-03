@@ -14,7 +14,7 @@ class OpenCvPro():
             pts = pts.reshape((-1, 1, 2))
             pts2 = barcode.rect
 
-            # Create a mask for the QR code region
+            # Genereate a mask for the QR code region
             mask = np.zeros(frame.shape[:2], dtype=np.uint8)
             cv2.drawContours(mask, [pts], -1, 255, -1)
 
