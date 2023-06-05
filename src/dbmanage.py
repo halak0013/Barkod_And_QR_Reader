@@ -1,8 +1,8 @@
 import sqlite3
 class dbmanage():
     def __init__(self):
-        con=sqlite3.connect("proje.db")
-        cursor=con.cursor()
+        self.con=sqlite3.connect("proje.db")
+        self.cursor=self.con.cursor()
 
     def createTable(self,tblName):
         sqlText="CREATE TABLE IF NOT EXISTS "+ tblName+" (id INT, name TEXT, price DOUBLE)"
