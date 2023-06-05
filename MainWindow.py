@@ -111,6 +111,7 @@ class MainWindow(QMainWindow):
             if self.old_id != id_:
                 self.old_id=id_
                 if dbObject.isThere("productTbl1",id_):
+                    #print("name",self.opcv_o.data.split()[1],"price",self.opcv_o.data.split()[2],"id",self.opcv_o.data.split()[0])
                     self.lb_name.setText(dbObject.get("productTbl1",id_,"name"))
                     self.lb_price.setText(str(dbObject.get("productTbl1",id_,"price")))
                     self.lb_id.setText(id_)
