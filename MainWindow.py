@@ -113,21 +113,19 @@ class MainWindow(QMainWindow):
             if self.old_id != id_:
                 self.old_id=id_
                 if self.dbObject.isThere("productTbl1",id_):
-                    if self.dbObject.isThere("productTbl1",id_):
-                        self.color=(0, 255, 0)
-                        #print("name",self.opcv_o.data.split()[1],"price",self.opcv_o.data.split()[2],"id",self.opcv_o.data.split()[0])
-                        self.lb_name.setText(self.dbObject.get("productTbl1",id_,"name"))
-                        self.lb_price.setText(str(self.dbObject.get("productTbl1",id_,"price")))
-                        self.lb_id.setText(id_)
-                    else:
-                        print("burada")
-                        self.color=(0, 0, 255)
-                        self.lb_id.setText(str(id_))
-                        self.lb_price.setText("")
-                        self.lb_name.setText("")
-
-        except:
-            pass
+                    self.color=(0, 255, 0)
+                    #print("name",self.opcv_o.data.split()[1],"price",self.opcv_o.data.split()[2],"id",self.opcv_o.data.split()[0])
+                    self.lb_name.setText(self.dbObject.get("productTbl1",id_,"name"))
+                    self.lb_price.setText(str(self.dbObject.get("productTbl1",id_,"price")))
+                    self.lb_id.setText(id_)
+                else:
+                    #print("burada")
+                    self.color=(0, 0, 255)
+                    self.lb_id.setText(str(id_))
+                    self.lb_price.setText("")
+                    self.lb_name.setText("")
+        except Exception as e:
+            print(e)
             
 
     def btn_add_clicked(self):
