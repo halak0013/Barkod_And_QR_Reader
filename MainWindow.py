@@ -6,16 +6,18 @@ from src.ViedoWidgetc import VideoWidget, VideoThread
 from src.OpenCvPro import *
 from src.dbmanage import *
 from src.QrGenerate import QRCode
-dbObject=dbmanage()
-dbObject.createTable("productTbl1")
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.dbObject=dbmanage()
+        self.dbObject.createTable("productTbl1")
         self.main_widget = QWidget()
         self.layout = QVBoxLayout(self.main_widget)
         self.right_widget = QWidget()
         self.right_layout = QVBoxLayout(self.right_widget)
         self.old_id=""
+        self.color=(0, 0, 255)
 
         # Generate the splitter
         self.splitter = QSplitter()
@@ -104,22 +106,25 @@ class MainWindow(QMainWindow):
         self.splitter.addWidget(self.right_widget)
 
     def process_frame(self, frame):
-        self.opcv_o.barcode_read(frame, (0, 0, 255))
+        self.opcv_o.barcode_read(frame, self.color)
         self.video_widget.show_frame(frame)
         try:
             id_=self.opcv_o.data.split()[0]
             if self.old_id != id_:
                 self.old_id=id_
-                if dbObject.isThere("productTbl1",id_):
-                    #print("name",self.opcv_o.data.split()[1],"price",self.opcv_o.data.split()[2],"id",self.opcv_o.data.split()[0])
-                    self.lb_name.setText(dbObject.get("productTbl1",id_,"name"))
-                    self.lb_price.setText(str(dbObject.get("productTbl1",id_,"price")))
-                    self.lb_id.setText(id_)
-                else:
-                    print("burada")
-                    self.lb_id.setText(str(id_))
-                    self.lb_price.setText("")
-                    self.lb_name.setText("")
+                if self.dbObject.isThere("productTbl1",id_):
+                    if self.dbObject.isThere("productTbl1",id_):
+                        self.color=(0, 255, 0)
+                        #print("name",self.opcv_o.data.split()[1],"price",self.opcv_o.data.split()[2],"id",self.opcv_o.data.split()[0])
+                        self.lb_name.setText(self.dbObject.get("productTbl1",id_,"name"))
+                        self.lb_price.setText(str(self.dbObject.get("productTbl1",id_,"price")))
+                        self.lb_id.setText(id_)
+                    else:
+                        print("burada")
+                        self.color=(0, 0, 255)
+                        self.lb_id.setText(str(id_))
+                        self.lb_price.setText("")
+                        self.lb_name.setText("")
 
         except:
             pass
@@ -127,16 +132,16 @@ class MainWindow(QMainWindow):
 
     def btn_add_clicked(self):
         self.qr_generater.generate_qr_code((self.lb_id.text()+self.lb_name.text()+self.lb_price.text()).strip())
-        dbObject.addProduct("productTbl1", self.lb_id.text(), self.lb_name.text(),self.lb_price.text())
+        self.dbObject.addProduct("productTbl1", self.lb_id.text(), self.lb_name.text(),self.lb_price.text())
         print("ekle")
 
     def btn_delete_clicked(self):
-        dbObject.deleteProduct("productTbl1",self.lb_id.text())
+        self.dbObject.deleteProduct("productTbl1",self.lb_id.text())
         print("sil")
 
     def bth_update_clicked(self):
         
-        dbObject.updateProduct("productTbl1",self.lb_id.text(), self.lb_name.text(),self.lb_price.text())  
+        self.dbObject.updateProduct("productTbl1",self.lb_id.text(), self.lb_name.text(),self.lb_price.text())  
         print("güncelle")
     
     def changeSlide(self):
