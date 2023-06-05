@@ -4,8 +4,10 @@ from PyQt6.QtWidgets import QApplication, QLabel,QLineEdit, QSlider, QSplitter, 
 
 from src.ViedoWidgetc import VideoWidget, VideoThread
 from src.OpenCvPro import *
+from src.dbmanage import *
+from src.QrGenerate import QRCode
 
-
+createTable("productTbl1")
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -13,6 +15,7 @@ class MainWindow(QMainWindow):
         self.layout = QVBoxLayout(self.main_widget)
         self.right_widget = QWidget()
         self.right_layout = QVBoxLayout(self.right_widget)
+        self.old_id=""
 
         # Generate the splitter
         self.splitter = QSplitter()
@@ -20,6 +23,7 @@ class MainWindow(QMainWindow):
 
         self.video_widget = VideoWidget(self)
         self.opcv_o = OpenCvPro()
+        self.qr_generater=QRCode()
 
         # Generate a QLabel
         self.label = QLabel("Barcode Data:", self)
@@ -29,7 +33,6 @@ class MainWindow(QMainWindow):
         self.video_thread = VideoThread(self.opcv_o.camera_capture())
         self.video_thread.frame_available.connect(self.process_frame)
         self.video_thread.start()
-
         self.add_right_side()
         self.add_to_splitte()  # Adding widgets to splitter
         self.layout.addWidget(self.splitter)
@@ -49,9 +52,13 @@ class MainWindow(QMainWindow):
         self.lb_price = QLineEdit()
         self.lb_id = QLineEdit()
         
-        self.lb_name.setEnabled(False)
-        self.lb_price.setEnabled(False)
-        self.lb_id.setEnabled(False)
+        self.lb_name.setPlaceholderText("Type value")
+        self.lb_price.setPlaceholderText("Type value")
+        self.lb_id.setPlaceholderText("Type value")
+        
+        self.lb_name.setMinimumWidth(200)
+        self.lb_price.setMinimumWidth(200)
+        self.lb_id.setMinimumWidth(200)
 
         self.btn_add = QPushButton("Add")
         self.btn_delete = QPushButton("Delete")
@@ -99,16 +106,39 @@ class MainWindow(QMainWindow):
     def process_frame(self, frame):
         self.opcv_o.barcode_read(frame, (0, 0, 255))
         self.video_widget.show_frame(frame)
+        try:
+            id_=self.opcv_o.data.split()[0]
+            if self.old_id != id_:
+                self.old_id=id_
+                if isThere("productTbl1",id_):
+                    #print("name",self.opcv_o.data.split()[1],"price",self.opcv_o.data.split()[2],"id",self.opcv_o.data.split()[0])
+                    self.lb_name.setText(get("productTbl1",id_,"name"))
+                    self.lb_price.setText(str(get("productTbl1",id_,"price")))
+                    self.lb_id.setText(id_)
+                else:
+                    print("burada")
+                    self.lb_id.setText(str(id_))
+                    self.lb_price.setText("")
+                    self.lb_name.setText("")
+
+        except:
+            pass
+            
 
     def btn_add_clicked(self):
+        self.qr_generater.generate_qr_code((self.lb_id.text()+self.lb_name.text()+self.lb_price.text()).strip())
+        addProduct("productTbl1", self.lb_id.text(), self.lb_name.text(),self.lb_price.text())
         print("ekle")
 
     def btn_delete_clicked(self):
+        deleteProduct("productTbl1",self.lb_id.text())
         print("sil")
 
     def bth_update_clicked(self):
-        print("güncelle")
         
+        updateProduct("productTbl1",self.lb_id.text(), self.lb_name.text(),self.lb_price.text())  
+        print("güncelle")
+    
     def changeSlide(self):
         print(str(self.sldr_resol.value()))
 

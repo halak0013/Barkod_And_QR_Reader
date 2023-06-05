@@ -1,7 +1,7 @@
 import qrcode
 
 
-class QRCode:
+class QRCode():
     # Create a QR code instance
     def __init__(self):
         self.qr = qrcode.QRCode(
@@ -16,7 +16,7 @@ class QRCode:
     def generate_qr_code(self,data):
         # Add data to the QR code
         #? id-name-price
-        data = "3 varan3 999.9"
+        #data = "3 varan3 999.9"
         self.qr.add_data(data)
 
         # Create the QR code image

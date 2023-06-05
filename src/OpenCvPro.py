@@ -4,10 +4,12 @@ from pyzbar.pyzbar import decode
 
 class OpenCvPro():
     def __init__(self):
+        self.data=""
         pass
     def barcode_read(self,frame,color):
         for barcode in decode(frame):
             myData:str = barcode.data.decode('utf-8')
+            self.data=myData
             print(myData)
             print(color)
             pts = np.array([barcode.polygon], np.int32)
