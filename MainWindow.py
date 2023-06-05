@@ -16,6 +16,7 @@ class MainWindow(QMainWindow):
         self.right_widget = QWidget()
         self.right_layout = QVBoxLayout(self.right_widget)
         self.old_id=""
+        self.color=(0, 0, 255)
 
         # Generate the splitter
         self.splitter = QSplitter()
@@ -104,19 +105,21 @@ class MainWindow(QMainWindow):
         self.splitter.addWidget(self.right_widget)
 
     def process_frame(self, frame):
-        self.opcv_o.barcode_read(frame, (0, 0, 255))
+        self.opcv_o.barcode_read(frame, self.color)
         self.video_widget.show_frame(frame)
         try:
             id_=self.opcv_o.data.split()[0]
             if self.old_id != id_:
                 self.old_id=id_
                 if isThere("productTbl1",id_):
+                    self.color=(0, 255, 0)
                     #print("name",self.opcv_o.data.split()[1],"price",self.opcv_o.data.split()[2],"id",self.opcv_o.data.split()[0])
                     self.lb_name.setText(get("productTbl1",id_,"name"))
                     self.lb_price.setText(str(get("productTbl1",id_,"price")))
                     self.lb_id.setText(id_)
                 else:
                     print("burada")
+                    self.color=(0, 0, 255)
                     self.lb_id.setText(str(id_))
                     self.lb_price.setText("")
                     self.lb_name.setText("")
