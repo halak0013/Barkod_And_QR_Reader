@@ -6,8 +6,8 @@ from src.ViedoWidgetc import VideoWidget, VideoThread
 from src.OpenCvPro import *
 from src.dbmanage import *
 from src.QrGenerate import QRCode
-
-createTable("productTbl1")
+dbObject=dbmanage()
+dbObject.createTable("productTbl1")
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -110,10 +110,9 @@ class MainWindow(QMainWindow):
             id_=self.opcv_o.data.split()[0]
             if self.old_id != id_:
                 self.old_id=id_
-                if isThere("productTbl1",id_):
-                    #print("name",self.opcv_o.data.split()[1],"price",self.opcv_o.data.split()[2],"id",self.opcv_o.data.split()[0])
-                    self.lb_name.setText(get("productTbl1",id_,"name"))
-                    self.lb_price.setText(str(get("productTbl1",id_,"price")))
+                if dbObject.isThere("productTbl1",id_):
+                    self.lb_name.setText(dbObject.get("productTbl1",id_,"name"))
+                    self.lb_price.setText(str(dbObject.get("productTbl1",id_,"price")))
                     self.lb_id.setText(id_)
                 else:
                     print("burada")
@@ -127,16 +126,16 @@ class MainWindow(QMainWindow):
 
     def btn_add_clicked(self):
         self.qr_generater.generate_qr_code((self.lb_id.text()+self.lb_name.text()+self.lb_price.text()).strip())
-        addProduct("productTbl1", self.lb_id.text(), self.lb_name.text(),self.lb_price.text())
+        dbObject.addProduct("productTbl1", self.lb_id.text(), self.lb_name.text(),self.lb_price.text())
         print("ekle")
 
     def btn_delete_clicked(self):
-        deleteProduct("productTbl1",self.lb_id.text())
+        dbObject.deleteProduct("productTbl1",self.lb_id.text())
         print("sil")
 
     def bth_update_clicked(self):
         
-        updateProduct("productTbl1",self.lb_id.text(), self.lb_name.text(),self.lb_price.text())  
+        dbObject.updateProduct("productTbl1",self.lb_id.text(), self.lb_name.text(),self.lb_price.text())  
         print("güncelle")
     
     def changeSlide(self):
