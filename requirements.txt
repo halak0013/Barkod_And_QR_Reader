@@ -1,5 +1,6 @@
 PyQt6==6.4.2
-pyzbar
-opencv-python
+pyzbar==0.1.9
+opencv-python==4.7.0.72
 numpy==1.24.3
-qrcode
+qrcode==7.4.2
+python-barcode==0.14.0
