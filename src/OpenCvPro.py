@@ -5,6 +5,7 @@ from pyzbar.pyzbar import decode
 class OpenCvPro():
     def __init__(self):
         self.data=""
+        self.thickness=1
         
     def barcode_read(self,frame,color):
         for barcode in decode(frame):
@@ -24,8 +25,8 @@ class OpenCvPro():
             blurred[mask.astype(bool)] = frame[mask.astype(bool)]
 
             # Draw the QR code bounding box and text on the blurred frame
-            cv2.polylines(blurred, [pts], True, color, 5)
-            cv2.putText(blurred, myData, (pts2[0], pts2[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
+            cv2.polylines(blurred, [pts], True, color, 2*self.thickness)
+            cv2.putText(blurred, myData, (pts2[0], pts2[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.2*self.thickness, color, 2)
 
             # Assign the blurred frame back to the original frame
             frame[:] = blurred[:]
@@ -36,3 +37,6 @@ class OpenCvPro():
         self.video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         
         return self.video_capture
+    def show_image(self,path):
+        im=cv2.imread(path,0)
+        cv2.imshow(None,mat=im)

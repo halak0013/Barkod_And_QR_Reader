@@ -5,7 +5,7 @@ class QRCode():
     # Create a QR code instance
     def __init__(self):
         self.qr = qrcode.QRCode(
-        version=1,  # QR code version (integer from 1 to 40)
+        version=10,  # QR code version (integer from 1 to 40)
         error_correction=qrcode.constants.ERROR_CORRECT_H,  # Error correction level
         box_size=10,  # Size of each box in pixels
         border=4  # Border size in boxes
@@ -17,7 +17,8 @@ class QRCode():
         # Add data to the QR code
         #? id-name-price
         #data = "3 varan3 999.9"
-        self.qr.add_data(data)
+        data2:str=data+""
+        self.qr.add_data(data=data2)
 
         # Create the QR code image
         self.qr.make(fit=True)
